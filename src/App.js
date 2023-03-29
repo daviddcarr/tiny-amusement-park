@@ -2,6 +2,7 @@ import './App.css'
 import { Canvas } from "@react-three/fiber"
 
 import Scene from "./components/Scene";
+import Main from "./components/ui/Main";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
         >
         <Scene />
       </Canvas>
+      <Main />
     </div>
-  );
+  )
 }
 
 export default App;
