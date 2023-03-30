@@ -2,6 +2,7 @@ import {
     useRef,
     useEffect
 } from "react"
+import * as THREE from "three"
 import {
     useThree,
     useFrame
@@ -10,6 +11,8 @@ import {
     useGLTF,
     useAnimations
 } from "@react-three/drei"
+
+import useCameraState from "../../hooks/useCameraState"
 
 export default function Train(props) {
 
@@ -23,6 +26,14 @@ export default function Train(props) {
 }
 
 function TrainTracks(props) {
+
+    const [
+        enableIsRidingRide, 
+        setCurrentRide
+    ] = useCameraState(state => [
+        state.enableIsRidingRide,
+        state.setCurrentRide
+    ])
     
     const tracks = useGLTF('./glb/3P_TrainTracks.glb')
 
@@ -31,15 +42,43 @@ function TrainTracks(props) {
     })
 
     return (
-        <primitive object={tracks.scene} {...props} />
+        <primitive 
+            onClick={() => {
+                enableIsRidingRide()
+                setCurrentRide('train')
+            }}
+            object={tracks.scene} 
+            {...props} 
+            />
     )
     
 }
 
 function TrainAnimated(props) {
+
+    const [
+        isRidingRide, 
+        enableIsRidingRide, 
+        currentRide, 
+        setCurrentRide
+    ] = useCameraState(state => [
+        state.isRidingRide,
+        state.enableIsRidingRide,
+        state.currentRide,
+        state.setCurrentRide
+    ])
+
+    const { camera } = useThree()
+
+        const frontChasisRef = useRef()
+        const chasisCameraRef = useRef()
     
     const train = useGLTF('./glb/3P_Train.glb')
     const animation = useAnimations(train.animations, train.scene)
+
+    train.scene.children.forEach((mesh) => {
+        mesh.castShadow = true
+    })
 
     useEffect(() => {
         const actions = animation.actions
@@ -49,14 +88,44 @@ function TrainAnimated(props) {
 
     }, [animation.actions])
 
-    train.scene.children.forEach((mesh) => {
-        mesh.castShadow = true
+    useEffect(() => {
+        if (train.scene) {
+            const frontChasis = train.scene.getObjectByName('TrainChasisEngine')
+            if (frontChasis) {
+                frontChasisRef.current = frontChasis
+
+                const chasisCamera = new THREE.Object3D()
+                chasisCamera.position.set(0, 0, -0.6)
+                frontChasis.add(chasisCamera)
+                chasisCameraRef.current = chasisCamera
+            }
+        }
+
+    }, [train.scene])
+
+    useFrame(() => {
+
+        if (isRidingRide && currentRide === 'train' && chasisCameraRef.current) {
+            const chasisCamera = chasisCameraRef.current
+
+            camera.position.copy(chasisCamera.getWorldPosition(new THREE.Vector3()))
+
+            camera.setRotationFromQuaternion(frontChasisRef.current.quaternion)
+        }
+
     })
 
     animation.mixer.timeScale = 0.5
 
     return (
-        <primitive object={train.scene} {...props} />
+        <primitive 
+            onClick={() => {
+                enableIsRidingRide()
+                setCurrentRide('train')
+            }}
+            object={train.scene} 
+            {...props}
+            />
     )
     
 }

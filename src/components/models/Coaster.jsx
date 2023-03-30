@@ -74,12 +74,11 @@ function CoasterAnimated(props) {
     
         const coaster = useGLTF('./glb/3P_CoasterTrain.glb')
         const animation = useAnimations(coaster.animations, coaster.scene)
-
-        console.log(animation)
     
         coaster.scene.children.forEach((mesh) => {
             mesh.castShadow = true
         })
+        
         useEffect(() => {
             const actions = animation.actions
             actions['Chasis.Chair.001'].reset().fadeIn(0.5).play()

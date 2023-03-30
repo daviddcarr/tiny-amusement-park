@@ -9,7 +9,10 @@ function App() {
     <div className="app w-100 h-screen">
       <Canvas
         shadows
-        camera={{ position: [12, 5, 0] }}
+        camera={{ 
+          position: [12, 5, 0],
+          near: 0.01,
+        }}
         >
         <Scene />
       </Canvas>
