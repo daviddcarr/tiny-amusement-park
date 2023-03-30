@@ -38,6 +38,7 @@ function TowerStructure(props) {
 
     tower.scene.children.forEach((mesh) => {
         mesh.castShadow = true
+        mesh.receiveShadow = true
     })
 
     return (

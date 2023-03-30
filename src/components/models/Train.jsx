@@ -82,9 +82,9 @@ function TrainAnimated(props) {
 
     useEffect(() => {
         const actions = animation.actions
-        actions['TrainCar1Action'].reset().fadeIn(0.5).play()
-        actions['TrainCar2Action'].reset().fadeIn(0.5).play()
-        actions['TrainCarEngineAction'].reset().fadeIn(0.5).play()
+        actions['Action'].reset().fadeIn(0.5).play()
+        actions['Action.001'].reset().fadeIn(0.5).play()
+        actions['Action.002'].reset().fadeIn(0.5).play()
 
     }, [animation.actions])
 
@@ -114,8 +114,6 @@ function TrainAnimated(props) {
         }
 
     })
-
-    animation.mixer.timeScale = 0.5
 
     return (
         <primitive 

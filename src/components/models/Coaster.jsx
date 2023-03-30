@@ -78,9 +78,11 @@ function CoasterAnimated(props) {
         coaster.scene.children.forEach((mesh) => {
             mesh.castShadow = true
         })
-        
+
         useEffect(() => {
             const actions = animation.actions
+
+            console.log(actions)
             actions['Chasis.Chair.001'].reset().fadeIn(0.5).play()
             actions['Chasis.Chair.002'].reset().fadeIn(0.5).play()
             actions['Chasis.Chair.003'].reset().fadeIn(0.5).play()

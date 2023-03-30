@@ -40,6 +40,7 @@ function FerrisSupports(props) {
 
     supports.scene.children.forEach((mesh) => {
         mesh.castShadow = true
+        mesh.receiveShadow = true
     })
     
     return (
@@ -58,11 +59,15 @@ function FerrisSupports(props) {
 function FerrisWheelAnimated(props) {
 
     const [
+        disableOrbitControls,
+        enablePointerLockControls,
         isRidingRide, 
         enableIsRidingRide, 
         currentRide, 
         setCurrentRide
     ] = useCameraState(state => [
+        state.disableOrbitControls,
+        state.enablePointerLockControls,
         state.isRidingRide,
         state.enableIsRidingRide,
         state.currentRide,
@@ -84,25 +89,21 @@ function FerrisWheelAnimated(props) {
     useEffect(() => {
 
         const actions = animation.actions
-        console.log(actions)
         actions['Ride.FerrisWheelAction'].reset().fadeIn(0.5).play()
         for (let i = 1; i < 13; i++) {
-            actions['Chasis.' + i].reset().fadeIn(0.5).play()
+            actions['FerrisChasis' + i].reset().fadeIn(0.5).play()
         }
-
-        animation.mixer.timeScale = 0.25
 
     }, [animation])
 
     useEffect(() => {
         if (wheel.scene) {
-            console.log(wheel.scene)
             const frontChasis = wheel.scene.getObjectByName('Chasis1')
             if (frontChasis) {
                 frontChasisRef.current = frontChasis
 
                 const chasisCamera = new THREE.Object3D()
-                chasisCamera.position.set(0, -0.2, -0.2)
+                chasisCamera.position.set(0, -0.25, -0.2)
                 frontChasis.add(chasisCamera)
                 chasisCameraRef.current = chasisCamera
             }
@@ -127,6 +128,7 @@ function FerrisWheelAnimated(props) {
             onClick={() => {
                 enableIsRidingRide()
                 setCurrentRide('ferrisWheel')
+                disableOrbitControls()
             }}
             object={wheel.scene}
             {...props}
