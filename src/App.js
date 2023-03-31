@@ -1,5 +1,6 @@
 import './App.css'
 import { Suspense } from 'react'
+import * as THREE from 'three'
 import { Canvas } from "@react-three/fiber"
 
 import Scene from "./components/Scene"
@@ -12,7 +13,10 @@ function App() {
     <Suspense fallback={<Loading />} >
       <div className="app w-100 h-screen">
         <Canvas
-          shadows
+          shadows={{ 
+            enabled: true,
+            type: THREE.PCFSoftShadowMap
+          }}
           camera={{ 
             position: [12, 5, 0],
             near: 0.01,

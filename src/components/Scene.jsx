@@ -48,6 +48,7 @@ export default function Scene() {
                 shadow-camera-right={8}
                 shadow-camera-bottom={-8}
                 shadow-camera-left={-9}
+                shadow-bias={-0.0005}
                 />
             <color attach="background" args={['#ccf2ff']} />
             <Environment preset="sunset" />
