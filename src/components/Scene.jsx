@@ -51,7 +51,7 @@ export default function Scene() {
                 shadow-bias={-0.0005}
                 />
             <color attach="background" args={['#ccf2ff']} />
-            <Environment preset="sunset" />
+            <Environment files={"sunset_fairway_2k.hdr"} />
             { !isRidingRide && <EffectComposer>
                 <DepthOfField 
                     focusDistance={0} 
